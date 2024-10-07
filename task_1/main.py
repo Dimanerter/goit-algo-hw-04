@@ -2,7 +2,7 @@ def total_salary(path):
     # обработка исключения когда файл не найден или поврежден
     try:
         # безопасное открытие файла
-        with open(path, 'r') as fh:
+        with open(path, 'r', encoding="utf-8") as fh:
             # создание списка со строками
             lines = [el.strip() for el in fh.readlines()]
             salarys =[]
@@ -17,11 +17,18 @@ def total_salary(path):
                 total += int(salary)
         # Среднее значение зарплат
         average = int(total/len(salarys))
-        return total, average
+        result = (total, average)
+        return result
     except FileNotFoundError:
          # Если файл не найден то программа возвращает 0, 0 и выводит "File not found"
          print("File not found")
-         return 0,0
+         result = (0,0)
+         return result
+    except UnicodeDecodeError:
+         # Если файл не найден то программа возвращает 0, 0 и выводит "The file is corrupted or cannot be read"
+         print("The file is corrupted or cannot be read")
+         result = (0,0)
+         return result
 
 def main():
     total, average = total_salary("salary_file.txt")
